@@ -1,6 +1,7 @@
 import { KeyboardEventHandler, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "store/store";
+import { addTodo, checkTodo, deleteTodo } from "../../store/todosSlice";
 
 import TodoListItem from "./TodoListItem";
 import Form from "react-bootstrap/Form";
@@ -20,25 +21,23 @@ const List = () => {
         text: todoText,
         isComplete: false,
       };
-      console.log("todo : ", todo);
-      dispatch({ type: "todos/addTodo", payload: todo });
+      dispatch(addTodo(todo));
       setTodoText("");
     }
   };
-  // enter를 입력할 경우 감지
+
   const handleKeyPress: KeyboardEventHandler<HTMLElement> = (e) => {
     if (e.key === "Enter") {
       handleAddTodo();
     }
   };
 
-  const handleSuccess = (index: number) => {
-    dispatch({ type: "todos/checkTodo", payload: index });
+  const handleSuccess = (id: string) => {
+    dispatch(checkTodo(id));
   };
 
-  const handleDelete = (index: number) => {
-    console.log("index : ", index);
-    dispatch({ type: "todos/deleteTodo", payload: index });
+  const handleDelete = (id: string) => {
+    dispatch(deleteTodo(id));
   };
 
   return (

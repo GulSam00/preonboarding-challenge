@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 type TodoListItemProps = {
   todo: Todo;
-  handleSuccess: (id: number) => void;
-  handleDelete: (id: number) => void;
+  handleSuccess: (id: string) => void;
+  handleDelete: (id: string) => void;
 };
 
 const TodoListItem = ({
@@ -37,7 +37,6 @@ const TodoListItem = ({
 export default TodoListItem;
 
 const TodoListItemContainer = styled.div`
-  // 100% 너비에 요소들이 가장자리에 배치되도록 설정
   display: flex;
   justify-content: space-between;
   align-items: center;
