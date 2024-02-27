@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { KeyboardEventHandler, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "store/store";
 
 import TodoListItem from "./TodoListItem";
 import Form from "react-bootstrap/Form";
@@ -6,43 +8,39 @@ import Button from "react-bootstrap/Button";
 
 import styled from "styled-components";
 
-// TodoList component with use booststrap
 const List = () => {
-  // state로 값 저장
   const [todoText, setTodoText] = useState("");
-  const [todos, setTodos] = useState([]);
-  // setValue로 값 변경
+  const todos = useSelector((state: RootState) => state.todos.todos);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAddTodo = () => {
     if (todoText) {
-      setTodos([
-        ...todos,
-        { text: todoText, isComplete: false, id: todos.length },
-      ]);
+      const todo = {
+        id: todos.length + 1 + todoText,
+        text: todoText,
+        isComplete: false,
+      };
+      console.log("todo : ", todo);
+      dispatch({ type: "todos/addTodo", payload: todo });
       setTodoText("");
     }
   };
   // enter를 입력할 경우 감지
-  const handleKeyPress = (e) => {
+  const handleKeyPress: KeyboardEventHandler<HTMLElement> = (e) => {
     if (e.key === "Enter") {
       handleAddTodo();
     }
   };
 
-  const handleSuccess = (index) => {
-    const newTodos = todos.map((todo, i) => {
-      if (i === index) {
-        return { ...todo, isComplete: !todo.isComplete };
-      }
-      return todo;
-    });
-    setTodos(newTodos);
+  const handleSuccess = (index: number) => {
+    dispatch({ type: "todos/checkTodo", payload: index });
   };
-  const handleDelete = (index) => {
+
+  const handleDelete = (index: number) => {
     console.log("index : ", index);
-    const newTodos = todos.filter((todo, i) => i !== index);
-    setTodos(newTodos);
+    dispatch({ type: "todos/deleteTodo", payload: index });
   };
+
   return (
     <ListContainer>
       <ListHeader>

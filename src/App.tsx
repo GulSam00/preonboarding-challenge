@@ -1,12 +1,16 @@
+import { Provider } from "react-redux";
 import { List } from "./components";
+import { store } from "./store/store";
 
 import styled from "styled-components";
 
 function App() {
   return (
-    <AppContainer>
-      <List />
-    </AppContainer>
+    <Provider store={store}>
+      <AppContainer>
+        <List />
+      </AppContainer>
+    </Provider>
   );
 }
 
